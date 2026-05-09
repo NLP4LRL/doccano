@@ -16,6 +16,7 @@ services:
       ALLOW_SIGNUP: "False"
       DEBUG: "False"
       DJANGO_SETTINGS_MODULE: "config.settings.production"
+      CSRF_TRUSTED_ORIGINS: "https://annotate.nlp4lrl.com"
     depends_on:
       - postgres
     networks:
@@ -83,7 +84,7 @@ services:
       - static_volume:/static
       - media:/media
     ports:
-      - 80:8080
+      - 127.0.0.1:8000:8080
     depends_on:
       - backend
     networks:
