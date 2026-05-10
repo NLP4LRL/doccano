@@ -1,6 +1,6 @@
 export default {
   mainTitle: 'Annotation Platform for Low-Resource Languages',
-  mainSubtitle: 'Collaboratively annotate text and build datasets for NLP research in low-resource language settings.',
+  mainSubtitle: 'Collaboratively annotate data and build high-quality datasets for NLP research in low-resource language settings.',
   getStarted: 'Get Started',
   startAnnotation: 'Start Annotation',
   featuresTitle: 'Built for NLP4LRL Research',

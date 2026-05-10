@@ -135,7 +135,7 @@ Use the official production Docker Compose stack instead of a single-container d
 
 ## Why Build Locally
 
-The VPS has only 2 GB RAM and 1 vCPU — running `yarn build` or `docker build` on it exhausts memory. Always build Docker images locally on a Mac and push to Docker Hub, then pull on the VPS.
+The VPS has only 2 GB RAM and 1 vCPU — running `yarn build` or `docker build` on it exhausts memory. Current workflow: Build Docker images locally and push to Docker Hub, then pull on the VPS.
 
 ## Custom Frontend Image
 

@@ -48,7 +48,7 @@ export default Vue.extend({
           text: this.$t('home.featuresText2')
         },
         {
-          imageSrc: 'feature1.png',
+          imageSrc: 'annotation-illustration.svg',
           title: this.$t('home.featuresTitle3'),
           text: this.$t('home.featuresText3')
         }
