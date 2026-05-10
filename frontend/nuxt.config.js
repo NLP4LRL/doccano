@@ -7,8 +7,8 @@ export default {
    ** Headers of the page
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    titleTemplate: '%s - NLP4LRL Annotation',
+    title: 'NLP4LRL Annotation',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -125,22 +125,22 @@ export default {
       success: colors.green.accent3,
       themes: {
         dark: {
-          primary: '#21CFF3',
-          accent: '#FF4081',
-          secondary: '#ffe18d',
-          success: '#4CAF50',
-          info: '#2196F3',
-          warning: '#FB8C00',
-          error: '#FF5252'
+          primary: '#3b82f6',
+          accent: '#2563eb',
+          secondary: '#1e40af',
+          success: '#10b981',
+          info: '#3b82f6',
+          warning: '#f59e0b',
+          error: '#ef4444'
         },
         light: {
-          primary: '#1976D2',
-          accent: '#e91e63',
-          secondary: '#30b1dc',
-          success: '#4CAF50',
-          info: '#2196F3',
-          warning: '#FB8C00',
-          error: '#FF5252'
+          primary: '#2563eb',
+          accent: '#3b82f6',
+          secondary: '#1e40af',
+          success: '#10b981',
+          info: '#3b82f6',
+          warning: '#f59e0b',
+          error: '#ef4444'
         }
       }
     }

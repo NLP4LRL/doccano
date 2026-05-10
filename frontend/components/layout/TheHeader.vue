@@ -2,11 +2,8 @@
   <v-app-bar app clipped-left>
     <slot name="leftDrawerIcon" />
     <nuxt-link v-if="!isAuthenticated" to="/" style="line-height: 0">
-      <img src="~/assets/icon.png" height="48" />
+      <img src="~/assets/nlp4lrl-logo-light.png" height="40" class="header-logo" />
     </nuxt-link>
-    <v-toolbar-title v-if="!isAuthenticated" class="ml-2 d-none d-sm-flex">
-      doccano
-    </v-toolbar-title>
     <v-btn
       v-if="isAuthenticated && isIndividualProject"
       text
@@ -29,23 +26,6 @@
     >
       {{ $t('header.projects') }}
     </v-btn>
-    <v-menu v-if="!isAuthenticated" open-on-hover offset-y>
-      <template #activator="{ on }">
-        <v-btn text v-on="on">
-          {{ $t('home.demoDropDown') }}
-          <v-icon>{{ mdiMenuDown }}</v-icon>
-        </v-btn>
-      </template>
-      <v-list>
-        <v-list-item
-          v-for="(item, index) in items"
-          :key="index"
-          @click="$router.push('/demo/' + item.link)"
-        >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
     <v-btn v-if="!isAuthenticated" outlined @click="$router.push(localePath('/auth'))">
       {{ $t('user.login') }}
     </v-btn>
@@ -78,7 +58,7 @@
 </template>
 
 <script>
-import { mdiLogout, mdiDotsVertical, mdiMenuDown, mdiHexagonMultiple } from '@mdi/js'
+import { mdiLogout, mdiDotsVertical, mdiHexagonMultiple } from '@mdi/js'
 import { mapGetters, mapActions } from 'vuex'
 import TheColorModeSwitcher from './TheColorModeSwitcher'
 import LocaleMenu from './LocaleMenu'
@@ -91,24 +71,8 @@ export default {
 
   data() {
     return {
-      items: [
-        { title: this.$t('home.demoNER'), link: 'named-entity-recognition' },
-        { title: this.$t('home.demoSent'), link: 'sentiment-analysis' },
-        { title: this.$t('home.demoTranslation'), link: 'translation' },
-        {
-          title: this.$t('home.demoIntenDetectSlotFil'),
-          link: 'intent-detection-and-slot-filling'
-        },
-        { title: this.$t('home.demoTextToSQL'), link: 'text-to-sql' },
-        { title: this.$t('home.demoImageClas'), link: 'image-classification' },
-        { title: this.$t('home.demoImageCapt'), link: 'image-caption' },
-        { title: this.$t('home.demoObjDetect'), link: 'object-detection' },
-        { title: this.$t('home.demoPolygSegm'), link: 'segmentation' },
-        { title: this.$t('home.demoSTT'), link: 'speech-to-text' }
-      ],
       mdiLogout,
       mdiDotsVertical,
-      mdiMenuDown,
       mdiHexagonMultiple
     }
   },
@@ -137,3 +101,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.header-logo {
+  display: block;
+}
+</style>
