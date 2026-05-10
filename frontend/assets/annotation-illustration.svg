@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 240" width="480" height="240">
+  <!-- Background -->
+  <rect width="480" height="240" rx="12" fill="#f8fafc"/>
+
+  <!-- Browser chrome -->
+  <rect width="480" height="36" rx="12" fill="#1e293b"/>
+  <rect y="24" width="480" height="12" fill="#1e293b"/>
+  <circle cx="16" cy="18" r="5" fill="#ef4444"/>
+  <circle cx="32" cy="18" r="5" fill="#f59e0b"/>
+  <circle cx="48" cy="18" r="5" fill="#10b981"/>
+
+  <!-- Annotation panel -->
+  <rect x="14" y="42" width="452" height="192" rx="8" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- ── ROW 1: Twi ── -->
+  <!-- Language badge: teal (distinct from PER blue) -->
+  <rect x="26" y="56" width="26" height="16" rx="3" fill="#0891b2"/>
+  <text x="39" y="68" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">TW</text>
+
+  <!-- "Kofi Annan" → PER -->
+  <rect x="60" y="52" width="88" height="22" rx="4" fill="#dbeafe"/>
+  <text x="104" y="67" font-family="monospace" font-size="12" fill="#1e40af" text-anchor="middle">Kofi Annan</text>
+  <rect x="60" y="75" width="88" height="12" rx="2" fill="#2563eb"/>
+  <text x="104" y="85" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">PER</text>
+
+  <!-- "kɔɔ" plain -->
+  <text x="156" y="67" font-family="monospace" font-size="12" fill="#475569">kɔɔ</text>
+
+  <!-- "Accra" → LOC -->
+  <rect x="186" y="52" width="48" height="22" rx="4" fill="#dcfce7"/>
+  <text x="210" y="67" font-family="monospace" font-size="12" fill="#166534" text-anchor="middle">Accra</text>
+  <rect x="186" y="75" width="48" height="12" rx="2" fill="#16a34a"/>
+  <text x="210" y="85" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">LOC</text>
+
+  <!-- "wɔ" plain -->
+  <text x="242" y="67" font-family="monospace" font-size="12" fill="#475569">wɔ</text>
+
+  <!-- "afe 2020" → DATE -->
+  <rect x="260" y="52" width="82" height="22" rx="4" fill="#fef9c3"/>
+  <text x="301" y="67" font-family="monospace" font-size="12" fill="#854d0e" text-anchor="middle">afe 2020</text>
+  <rect x="260" y="75" width="82" height="12" rx="2" fill="#ca8a04"/>
+  <text x="301" y="85" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">DATE</text>
+
+  <!-- "mu." plain -->
+  <text x="350" y="67" font-family="monospace" font-size="12" fill="#475569">mu.</text>
+
+  <!-- Divider -->
+  <line x1="26" y1="98" x2="454" y2="98" stroke="#f1f5f9" stroke-width="1"/>
+
+  <!-- ── ROW 2: Ga ── -->
+  <!-- Language badge: purple -->
+  <rect x="26" y="110" width="26" height="16" rx="3" fill="#7c3aed"/>
+  <text x="39" y="122" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">GA</text>
+
+  <!-- "Naa Lamiley" → PER -->
+  <rect x="60" y="106" width="96" height="22" rx="4" fill="#dbeafe"/>
+  <text x="108" y="121" font-family="monospace" font-size="12" fill="#1e40af" text-anchor="middle">Naa Lamiley</text>
+  <rect x="60" y="129" width="96" height="12" rx="2" fill="#2563eb"/>
+  <text x="108" y="139" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">PER</text>
+
+  <!-- "jɛ" plain -->
+  <text x="164" y="121" font-family="monospace" font-size="12" fill="#475569">jɛ</text>
+
+  <!-- "Korle Bu" → ORG -->
+  <rect x="182" y="106" width="76" height="22" rx="4" fill="#fce7f3"/>
+  <text x="220" y="121" font-family="monospace" font-size="12" fill="#9d174d" text-anchor="middle">Korle Bu</text>
+  <rect x="182" y="129" width="76" height="12" rx="2" fill="#db2777"/>
+  <text x="220" y="139" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">ORG</text>
+
+  <!-- "yɛ" plain -->
+  <text x="266" y="121" font-family="monospace" font-size="12" fill="#475569">yɛ</text>
+
+  <!-- "Ga" → LOC -->
+  <rect x="282" y="106" width="34" height="22" rx="4" fill="#dcfce7"/>
+  <text x="299" y="121" font-family="monospace" font-size="12" fill="#166534" text-anchor="middle">Ga</text>
+  <rect x="282" y="129" width="34" height="12" rx="2" fill="#16a34a"/>
+  <text x="299" y="139" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">LOC</text>
+
+  <!-- Divider -->
+  <line x1="26" y1="152" x2="454" y2="152" stroke="#f1f5f9" stroke-width="1"/>
+
+  <!-- ── LABEL LEGEND (left) ── -->
+  <text x="26" y="168" font-family="sans-serif" font-size="8" fill="#94a3b8" font-weight="700" letter-spacing="0.06em">LABEL TYPES</text>
+
+  <rect x="26" y="174" width="38" height="14" rx="3" fill="#2563eb"/>
+  <text x="45" y="184" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">PER</text>
+
+  <rect x="70" y="174" width="36" height="14" rx="3" fill="#16a34a"/>
+  <text x="88" y="184" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">LOC</text>
+
+  <rect x="112" y="174" width="36" height="14" rx="3" fill="#db2777"/>
+  <text x="130" y="184" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">ORG</text>
+
+  <rect x="154" y="174" width="40" height="14" rx="3" fill="#ca8a04"/>
+  <text x="174" y="184" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">DATE</text>
+
+  <!-- ── PROGRESS (right) ── -->
+  <text x="230" y="168" font-family="sans-serif" font-size="8" fill="#94a3b8" font-weight="700" letter-spacing="0.06em">ANNOTATION PROGRESS</text>
+  <rect x="230" y="174" width="186" height="8" rx="4" fill="#e2e8f0"/>
+  <rect x="230" y="174" width="121" height="8" rx="4" fill="#2563eb"/>
+  <text x="424" y="184" font-family="sans-serif" font-size="9" fill="#64748b" text-anchor="middle">65%</text>
+</svg>

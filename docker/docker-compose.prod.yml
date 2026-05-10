@@ -68,7 +68,7 @@ services:
       - network-backend
 
   nginx:
-    image: doccano/doccano:frontend
+    image: billofosuhene/doccano-frontend:nlp4lrl
     command: >
       /bin/sh -c
       "envsubst '

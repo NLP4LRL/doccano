@@ -1,11 +1,20 @@
 export default {
   home: 'Home',
-  welcome: 'Welcome to Doccano!',
-  importData: 'Import a dataset',
+  welcome: 'Welcome!',
+  subtitle: 'What would you like to do today?',
+  importData: 'Import Dataset',
+  importDataDesc: 'Upload text or data files to populate this project.',
   createLabels: 'Create labels for this project',
   addMembers: 'Add members for collaborative work',
   defineGuideline: 'Define a guideline for the work',
   annotateDataset: 'Annotate the dataset',
   viewStatistics: 'View statistics',
-  exportDataset: 'Export the dataset'
+  exportDataset: 'Export Dataset',
+  exportDataDesc: 'Download annotated data in your preferred format.',
+  datasetDesc: 'Browse, search, and manage the documents in this project.',
+  labelsDesc: 'Define and manage the label types used for annotation.',
+  guidelineDesc: 'Read or edit the annotation guideline for this project.',
+  membersDesc: 'Invite collaborators and manage their roles.',
+  statisticsDesc: 'Track annotation progress and inter-annotator agreement.',
+  settingsDesc: 'Configure project name, type, and other settings.'
 }

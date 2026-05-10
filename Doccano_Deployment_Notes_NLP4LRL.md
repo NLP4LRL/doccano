@@ -120,13 +120,78 @@ git clone https://github.com/NLP4LRL/doccano.git
 ## Important Repository Files
 
 ```text
-docker/Dockerfile.prod
+docker/Dockerfile.nginx       # Frontend image (Nuxt → Nginx)
+docker/Dockerfile.prod        # Backend image (Django + Celery)
 docker/docker-compose.prod.yml
 ```
 
 ## Recommendation
 
 Use the official production Docker Compose stack instead of a single-container deployment.
+
+---
+
+# 5a. NLP4LRL Frontend Customizations
+
+## Active Branch
+
+All UI customizations live on:
+
+```text
+frontend/nlp4lrl-ui-rebrand
+```
+
+## Customizations Made
+
+- **Branding:** NLP4LRL logo, color palette (`#2563eb` primary, `#1e40af` secondary), and favicon replacing all doccano defaults
+- **Landing page:** Custom hero banner with gradient background and NLP4LRL logo; updated copy for low-resource language research context; removed GitHub and demo buttons; feature card annotation illustration using real Twi and Ga NER sentences
+- **Login page:** NLP4LRL logo and dark gradient background
+- **Header:** NLP4LRL logo replacing doccano icon; demo dropdown removed
+- **Footer:** NLP4LRL copyright linking to nlp4lrl.com; doccano credited with link to their GitHub
+- **Project home:** Redesigned as a role-aware dashboard (replaces doccano video stepper); shows project name, Start Annotation CTA, and quick-action cards filtered by user role
+
+## Building and Deploying Frontend Changes
+
+The VPS has only 2 GB RAM and 1 vCPU — running `yarn build` or `docker build` on it exhausts memory. Always build locally and push to Docker Hub, then pull on the VPS.
+
+**Custom frontend image (Docker Hub):**
+
+```text
+billofosuhene/doccano-frontend:nlp4lrl
+```
+
+The `docker/docker-compose.prod.yml` nginx service uses this image instead of the upstream `doccano/doccano:frontend`.
+
+**1. Build for linux/amd64 (VPS architecture) and push:**
+
+```bash
+docker buildx build \
+  --platform linux/amd64 \
+  -f docker/Dockerfile.nginx \
+  -t billofosuhene/doccano-frontend:nlp4lrl \
+  --push \
+  .
+```
+
+**2. On the VPS, pull and restart only the nginx container:**
+
+```bash
+cd /path/to/doccano
+git pull origin frontend/nlp4lrl-ui-rebrand
+docker compose -f docker/docker-compose.prod.yml pull nginx
+docker compose -f docker/docker-compose.prod.yml up -d nginx
+```
+
+## Expected nginx bind warnings (harmless)
+
+After restarting the nginx container you may see:
+
+```text
+nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)
+nginx: [emerg] bind() to 0.0.0.0:443 failed (98: Address already in use)
+```
+
+These are safe to ignore. The host nginx owns ports 80/443; the Docker nginx only listens internally on port 8080 (mapped to `127.0.0.1:8000` on the host).
 
 ---
 
@@ -229,16 +294,53 @@ server {
 apt install -y python3-certbot-nginx
 ```
 
-## Enable HTTPS
+## Enable HTTPS (both www and non-www)
+
+Run certbot with both domains on a single line:
 
 ```bash
-certbot --nginx -d annotate.nlp4lrl.com
+certbot --nginx -d annotate.nlp4lrl.com -d www.annotate.nlp4lrl.com
 ```
 
 ## Outcome
 
-- HTTPS enabled successfully
+- HTTPS enabled for both `annotate.nlp4lrl.com` and `www.annotate.nlp4lrl.com`
 - Automatic certificate renewal configured
+
+## www → non-www Redirect
+
+Certbot adds the `www` server blocks to `/etc/nginx/sites-available/default` but without a redirect, causing the nginx welcome page to appear for `www` visitors. Fix both the HTTP and HTTPS `www` blocks in that file:
+
+**HTTP block** — change `$host` to the canonical domain:
+```nginx
+server {
+    if ($host = www.annotate.nlp4lrl.com) {
+        return 301 https://annotate.nlp4lrl.com$request_uri;
+    } # managed by Certbot
+
+    listen 80;
+    listen [::]:80;
+    server_name www.annotate.nlp4lrl.com;
+    return 404; # managed by Certbot
+}
+```
+
+**HTTPS block** — add the redirect:
+```nginx
+server {
+    listen 443 ssl;
+    server_name www.annotate.nlp4lrl.com;
+    ssl_certificate /etc/letsencrypt/live/annotate.nlp4lrl.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/annotate.nlp4lrl.com/privkey.pem; # managed by Certbot
+
+    return 301 https://annotate.nlp4lrl.com$request_uri;
+}
+```
+
+Then reload nginx:
+```bash
+sudo nginx -t && sudo systemctl reload nginx
+```
 
 ---
 
