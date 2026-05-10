@@ -294,16 +294,53 @@ server {
 apt install -y python3-certbot-nginx
 ```
 
-## Enable HTTPS
+## Enable HTTPS (both www and non-www)
+
+Run certbot with both domains on a single line:
 
 ```bash
-certbot --nginx -d annotate.nlp4lrl.com
+certbot --nginx -d annotate.nlp4lrl.com -d www.annotate.nlp4lrl.com
 ```
 
 ## Outcome
 
-- HTTPS enabled successfully
+- HTTPS enabled for both `annotate.nlp4lrl.com` and `www.annotate.nlp4lrl.com`
 - Automatic certificate renewal configured
+
+## www → non-www Redirect
+
+Certbot adds the `www` server blocks to `/etc/nginx/sites-available/default` but without a redirect, causing the nginx welcome page to appear for `www` visitors. Fix both the HTTP and HTTPS `www` blocks in that file:
+
+**HTTP block** — change `$host` to the canonical domain:
+```nginx
+server {
+    if ($host = www.annotate.nlp4lrl.com) {
+        return 301 https://annotate.nlp4lrl.com$request_uri;
+    } # managed by Certbot
+
+    listen 80;
+    listen [::]:80;
+    server_name www.annotate.nlp4lrl.com;
+    return 404; # managed by Certbot
+}
+```
+
+**HTTPS block** — add the redirect:
+```nginx
+server {
+    listen 443 ssl;
+    server_name www.annotate.nlp4lrl.com;
+    ssl_certificate /etc/letsencrypt/live/annotate.nlp4lrl.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/annotate.nlp4lrl.com/privkey.pem; # managed by Certbot
+
+    return 301 https://annotate.nlp4lrl.com$request_uri;
+}
+```
+
+Then reload nginx:
+```bash
+sudo nginx -t && sudo systemctl reload nginx
+```
 
 ---
 
