@@ -91,6 +91,28 @@ cp docker/.env.example docker/.env
 
 Key env vars: `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `ADMIN_EMAIL`, `POSTGRES_*`, `RABBITMQ_DEFAULT_*`, `CSRF_TRUSTED_ORIGINS`, `SECRET_KEY`, `DJANGO_SETTINGS_MODULE`.
 
+## Deploying Frontend Changes to Production
+
+The VPS (2 GB RAM / 1 vCPU) cannot build Docker images. Build locally and push to Docker Hub, then pull on the VPS.
+
+**Build and push** (run from repo root, requires Docker Desktop running):
+```bash
+docker buildx build \
+  --platform linux/amd64 \
+  -f docker/Dockerfile.nginx \
+  -t billofosuhene/doccano-frontend:nlp4lrl \
+  --push \
+  .
+```
+
+**On the VPS** — pull and restart only the nginx container:
+```bash
+docker compose -f docker/docker-compose.prod.yml pull nginx
+docker compose -f docker/docker-compose.prod.yml up -d nginx
+```
+
+The `nginx` service in `docker-compose.prod.yml` uses the custom image `billofosuhene/doccano-frontend:nlp4lrl`. Bind warnings on ports 80/443 after restart are harmless — the host nginx owns those ports.
+
 ## CI
 
 GitHub Actions (`.github/workflows/ci.yml`) runs on every push:

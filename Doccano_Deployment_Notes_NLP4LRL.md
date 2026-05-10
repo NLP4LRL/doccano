@@ -120,13 +120,67 @@ git clone https://github.com/NLP4LRL/doccano.git
 ## Important Repository Files
 
 ```text
-docker/Dockerfile.prod
+docker/Dockerfile.nginx       # Frontend image (Nuxt → Nginx)
+docker/Dockerfile.prod        # Backend image (Django + Celery)
 docker/docker-compose.prod.yml
 ```
 
 ## Recommendation
 
 Use the official production Docker Compose stack instead of a single-container deployment.
+
+---
+
+# 5a. Building and Deploying Custom Frontend Changes
+
+## Why Build Locally
+
+The VPS has only 2 GB RAM and 1 vCPU — running `yarn build` or `docker build` on it exhausts memory. Always build Docker images locally on a Mac and push to Docker Hub, then pull on the VPS.
+
+## Custom Frontend Image
+
+The NLP4LRL-branded frontend image is published at:
+
+```text
+billofosuhene/doccano-frontend:nlp4lrl
+```
+
+The `docker/docker-compose.prod.yml` nginx service is configured to use this image instead of the upstream `doccano/doccano:frontend`.
+
+## Workflow for Frontend Changes
+
+**1. Make and commit changes on a feature branch locally.**
+
+**2. Build the frontend image for linux/amd64 (VPS architecture) and push:**
+
+```bash
+docker buildx build \
+  --platform linux/amd64 \
+  -f docker/Dockerfile.nginx \
+  -t billofosuhene/doccano-frontend:nlp4lrl \
+  --push \
+  .
+```
+
+**3. On the VPS, pull the new image and restart only the nginx container:**
+
+```bash
+cd /path/to/doccano
+git pull origin <branch>
+docker compose -f docker/docker-compose.prod.yml pull nginx
+docker compose -f docker/docker-compose.prod.yml up -d nginx
+```
+
+## Expected nginx bind warnings (harmless)
+
+After restarting the nginx container you may see:
+
+```text
+nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)
+nginx: [emerg] bind() to 0.0.0.0:443 failed (98: Address already in use)
+```
+
+These are safe to ignore. The host nginx owns ports 80/443; the Docker nginx only listens internally on port 8080 (mapped to `127.0.0.1:8000` on the host).
 
 ---
 
