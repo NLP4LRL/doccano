@@ -2,7 +2,7 @@
   <v-app-bar app clipped-left>
     <slot name="leftDrawerIcon" />
     <nuxt-link v-if="!isAuthenticated" to="/" style="line-height: 0">
-      <img src="~/assets/nlp4lrl-logo-light.png" height="40" class="header-logo" />
+      <img src="~/assets/nlp4lrl-logo-dark-transparent.png" height="40" class="header-logo" />
     </nuxt-link>
     <v-btn
       v-if="isAuthenticated && isIndividualProject"
