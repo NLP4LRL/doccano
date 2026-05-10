@@ -131,27 +131,38 @@ Use the official production Docker Compose stack instead of a single-container d
 
 ---
 
-# 5a. Building and Deploying Custom Frontend Changes
+# 5a. NLP4LRL Frontend Customizations
 
-## Why Build Locally
+## Active Branch
 
-The VPS has only 2 GB RAM and 1 vCPU — running `yarn build` or `docker build` on it exhausts memory. Current workflow: Build Docker images locally and push to Docker Hub, then pull on the VPS.
+All UI customizations live on:
 
-## Custom Frontend Image
+```text
+frontend/nlp4lrl-ui-rebrand
+```
 
-The NLP4LRL-branded frontend image is published at:
+## Customizations Made
+
+- **Branding:** NLP4LRL logo, color palette (`#2563eb` primary, `#1e40af` secondary), and favicon replacing all doccano defaults
+- **Landing page:** Custom hero banner with gradient background and NLP4LRL logo; updated copy for low-resource language research context; removed GitHub and demo buttons; feature card annotation illustration using real Twi and Ga NER sentences
+- **Login page:** NLP4LRL logo and dark gradient background
+- **Header:** NLP4LRL logo replacing doccano icon; demo dropdown removed
+- **Footer:** NLP4LRL copyright linking to nlp4lrl.com; doccano credited with link to their GitHub
+- **Project home:** Redesigned as a role-aware dashboard (replaces doccano video stepper); shows project name, Start Annotation CTA, and quick-action cards filtered by user role
+
+## Building and Deploying Frontend Changes
+
+The VPS has only 2 GB RAM and 1 vCPU — running `yarn build` or `docker build` on it exhausts memory. Always build locally and push to Docker Hub, then pull on the VPS.
+
+**Custom frontend image (Docker Hub):**
 
 ```text
 billofosuhene/doccano-frontend:nlp4lrl
 ```
 
-The `docker/docker-compose.prod.yml` nginx service is configured to use this image instead of the upstream `doccano/doccano:frontend`.
+The `docker/docker-compose.prod.yml` nginx service uses this image instead of the upstream `doccano/doccano:frontend`.
 
-## Workflow for Frontend Changes
-
-**1. Make and commit changes on a feature branch locally.**
-
-**2. Build the frontend image for linux/amd64 (VPS architecture) and push:**
+**1. Build for linux/amd64 (VPS architecture) and push:**
 
 ```bash
 docker buildx build \
@@ -162,11 +173,11 @@ docker buildx build \
   .
 ```
 
-**3. On the VPS, pull the new image and restart only the nginx container:**
+**2. On the VPS, pull and restart only the nginx container:**
 
 ```bash
 cd /path/to/doccano
-git pull origin <branch>
+git pull origin frontend/nlp4lrl-ui-rebrand
 docker compose -f docker/docker-compose.prod.yml pull nginx
 docker compose -f docker/docker-compose.prod.yml up -d nginx
 ```
