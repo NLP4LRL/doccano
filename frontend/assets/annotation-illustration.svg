@@ -58,8 +58,8 @@
   <rect x="60" y="129" width="96" height="12" rx="2" fill="#2563eb"/>
   <text x="108" y="139" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">PER</text>
 
-  <!-- "lo" plain -->
-  <text x="164" y="121" font-family="monospace" font-size="12" fill="#475569">lo</text>
+  <!-- "jɛ" plain -->
+  <text x="164" y="121" font-family="monospace" font-size="12" fill="#475569">jɛ</text>
 
   <!-- "Korle Bu" → ORG -->
   <rect x="182" y="106" width="76" height="22" rx="4" fill="#fce7f3"/>
@@ -67,17 +67,14 @@
   <rect x="182" y="129" width="76" height="12" rx="2" fill="#db2777"/>
   <text x="220" y="139" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">ORG</text>
 
-  <!-- "ni" plain -->
-  <text x="266" y="121" font-family="monospace" font-size="12" fill="#475569">ni</text>
+  <!-- "yɛ" plain -->
+  <text x="266" y="121" font-family="monospace" font-size="12" fill="#475569">yɛ</text>
 
-  <!-- "Accra" → LOC -->
-  <rect x="282" y="106" width="48" height="22" rx="4" fill="#dcfce7"/>
-  <text x="306" y="121" font-family="monospace" font-size="12" fill="#166534" text-anchor="middle">Accra</text>
-  <rect x="282" y="129" width="48" height="12" rx="2" fill="#16a34a"/>
-  <text x="306" y="139" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">LOC</text>
-
-  <!-- "." plain -->
-  <text x="336" y="121" font-family="monospace" font-size="12" fill="#475569">.</text>
+  <!-- "Ga" → LOC -->
+  <rect x="282" y="106" width="34" height="22" rx="4" fill="#dcfce7"/>
+  <text x="299" y="121" font-family="monospace" font-size="12" fill="#166534" text-anchor="middle">Ga</text>
+  <rect x="282" y="129" width="34" height="12" rx="2" fill="#16a34a"/>
+  <text x="299" y="139" font-family="sans-serif" font-size="8" fill="#fff" text-anchor="middle" font-weight="600">LOC</text>
 
   <!-- Divider -->
   <line x1="26" y1="152" x2="454" y2="152" stroke="#f1f5f9" stroke-width="1"/>
