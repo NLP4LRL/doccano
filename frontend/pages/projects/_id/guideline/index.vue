@@ -4,7 +4,7 @@
       {{ $t('guideline.readOnly') }}
     </v-alert>
     <editor
-      v-if="isProjectAdmin"
+      v-if="isProjectAdmin && loaded"
       ref="toastuiEditor"
       :initial-value="project.guideline"
       :options="editorOptions"
@@ -13,7 +13,7 @@
       @change="updateProject"
     />
     <viewer
-      v-else
+      v-else-if="!isProjectAdmin && loaded"
       :initial-value="project.guideline"
       :options="editorOptions"
     />
@@ -49,6 +49,7 @@ export default {
       },
       project: {},
       mounted: false,
+      loaded: false,
       isProjectAdmin: false
     }
   },
@@ -58,6 +59,8 @@ export default {
     const member = await this.$repositories.member.fetchMyRole(projectId)
     this.isProjectAdmin = member.isProjectAdmin
     this.project = await this.$services.project.findById(projectId)
+    this.loaded = true
+    await this.$nextTick()
     if (this.isProjectAdmin) {
       this.$refs.toastuiEditor.invoke('setMarkdown', this.project.guideline)
     }
