@@ -68,11 +68,12 @@ export default {
   },
 
   methods: {
-    onEditorLoad() {
-      // Called when Toast UI Editor finishes internal initialization.
-      // Set content here to avoid the race between initialValue and the
-      // editor's own async setup, then enable updateProject saves.
-      this.$refs.toastuiEditor.invoke('setMarkdown', this.project.guideline || '')
+    onEditorLoad(editor) {
+      // The @load event fires synchronously inside new Editor(), before
+      // the `this.editor = new Editor()` assignment completes. Calling
+      // invoke() here would hit `this.editor === null` and silently fail.
+      // Use the editor instance passed as the load-event argument instead.
+      editor.setMarkdown(this.project.guideline || '')
       this.mounted = true
     },
 
