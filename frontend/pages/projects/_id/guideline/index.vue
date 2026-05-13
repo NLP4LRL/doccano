@@ -9,8 +9,7 @@
       :initial-value="project.guideline"
       :options="editorOptions"
       preview-style="vertical"
-      height="inherit"
-      @load="onEditorLoad"
+      height="500px"
       @change="updateProject"
     />
     <viewer
@@ -55,28 +54,34 @@ export default {
     }
   },
 
+  watch: {
+    loaded(val) {
+      if (val && this.isProjectAdmin) {
+        // Watch fires after Vue re-renders (child Editor is mounted and
+        // this.editor is assigned). $nextTick ensures we are past all
+        // pending DOM updates before calling setMarkdown.
+        this.$nextTick(() => {
+          if (this.$refs.toastuiEditor) {
+            this.$refs.toastuiEditor.invoke('setMarkdown', this.project.guideline || '')
+            this.mounted = true
+          }
+        })
+      }
+    }
+  },
+
   async mounted() {
     const projectId = this.$route.params.id
     const member = await this.$repositories.member.fetchMyRole(projectId)
     this.isProjectAdmin = member.isProjectAdmin
     this.project = await this.$services.project.findById(projectId)
     this.loaded = true
-    // For non-admins the Viewer doesn't need load tracking
     if (!this.isProjectAdmin) {
       this.mounted = true
     }
   },
 
   methods: {
-    onEditorLoad(editor) {
-      // The @load event fires synchronously inside new Editor(), before
-      // the `this.editor = new Editor()` assignment completes. Calling
-      // invoke() here would hit `this.editor === null` and silently fail.
-      // Use the editor instance passed as the load-event argument instead.
-      editor.setMarkdown(this.project.guideline || '')
-      this.mounted = true
-    },
-
     updateProject: _.debounce(function () {
       if (this.mounted && this.isProjectAdmin) {
         this.project.guideline = this.$refs.toastuiEditor.invoke('getMarkdown')
