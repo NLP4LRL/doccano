@@ -60,10 +60,6 @@ export default {
     this.isProjectAdmin = member.isProjectAdmin
     this.project = await this.$services.project.findById(projectId)
     this.loaded = true
-    await this.$nextTick()
-    if (this.isProjectAdmin) {
-      this.$refs.toastuiEditor.invoke('setMarkdown', this.project.guideline)
-    }
     this.mounted = true
   },
 
