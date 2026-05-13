@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <v-alert v-if="!isProjectAdmin" type="info" text dense class="ma-4">
       {{ $t('guideline.readOnly') }}
     </v-alert>
@@ -9,7 +9,7 @@
       :initial-value="project.guideline"
       :options="editorOptions"
       preview-style="vertical"
-      height="500px"
+      height="inherit"
       @change="updateProject"
     />
     <viewer
