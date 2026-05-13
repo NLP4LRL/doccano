@@ -1,5 +1,6 @@
 export default {
   labels: 'Labels',
+  readOnly: 'You are viewing labels in read-only mode.',
   shortkey: 'Shortkey',
   color: 'Color',
   createLabel: 'Create Label',

@@ -1,17 +1,28 @@
 <template>
-  <editor
-    ref="toastuiEditor"
-    :initial-value="project.guideline"
-    :options="editorOptions"
-    preview-style="vertical"
-    height="inherit"
-    @change="updateProject"
-  />
+  <div>
+    <v-alert v-if="!isProjectAdmin" type="info" text dense class="ma-4">
+      {{ $t('guideline.readOnly') }}
+    </v-alert>
+    <editor
+      v-if="isProjectAdmin"
+      ref="toastuiEditor"
+      :initial-value="project.guideline"
+      :options="editorOptions"
+      preview-style="vertical"
+      height="inherit"
+      @change="updateProject"
+    />
+    <viewer
+      v-else
+      :initial-value="project.guideline"
+      :options="editorOptions"
+    />
+  </div>
 </template>
 
 <script>
 import '@/assets/style/editor.css'
-import { Editor } from '@toast-ui/vue-editor'
+import { Editor, Viewer } from '@toast-ui/vue-editor'
 import 'codemirror/lib/codemirror.css'
 import _ from 'lodash'
 import 'tui-editor/dist/tui-editor-contents.css'
@@ -19,12 +30,13 @@ import 'tui-editor/dist/tui-editor.css'
 
 export default {
   components: {
-    Editor
+    Editor,
+    Viewer
   },
 
   layout: 'project',
 
-  middleware: ['check-auth', 'auth', 'setCurrentProject', 'isProjectAdmin'],
+  middleware: ['check-auth', 'auth', 'setCurrentProject'],
 
   validate({ params }) {
     return /^\d+$/.test(params.id)
@@ -36,20 +48,25 @@ export default {
         language: this.$t('toastui.localeCode')
       },
       project: {},
-      mounted: false
+      mounted: false,
+      isProjectAdmin: false
     }
   },
 
   async mounted() {
     const projectId = this.$route.params.id
+    const member = await this.$repositories.member.fetchMyRole(projectId)
+    this.isProjectAdmin = member.isProjectAdmin
     this.project = await this.$services.project.findById(projectId)
-    this.$refs.toastuiEditor.invoke('setMarkdown', this.project.guideline)
+    if (this.isProjectAdmin) {
+      this.$refs.toastuiEditor.invoke('setMarkdown', this.project.guideline)
+    }
     this.mounted = true
   },
 
   methods: {
     updateProject: _.debounce(function () {
-      if (this.mounted) {
+      if (this.mounted && this.isProjectAdmin) {
         this.project.guideline = this.$refs.toastuiEditor.invoke('getMarkdown')
         this.$services.project.update(this.$route.params.id, this.project)
       }

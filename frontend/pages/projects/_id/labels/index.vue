@@ -1,5 +1,8 @@
 <template>
   <v-card>
+    <v-alert v-if="isReadOnly" type="info" text dense class="ma-4">
+      {{ $t('labels.readOnly') }}
+    </v-alert>
     <v-tabs v-if="hasMultiType" v-model="tab">
       <template v-if="isIntentDetectionAndSlotFilling">
         <v-tab class="text-capitalize">Category</v-tab>
@@ -12,13 +15,14 @@
     </v-tabs>
     <v-card-title>
       <action-menu
+        v-if="!isReadOnly"
         :add-only="canOnlyAdd"
         @create="$router.push('labels/add?type=' + labelType)"
         @upload="$router.push('labels/import?type=' + labelType)"
         @download="download"
       />
       <v-btn
-        v-if="!canOnlyAdd"
+        v-if="!canOnlyAdd && !isReadOnly"
         class="text-capitalize ms-2"
         :disabled="!canDelete"
         outlined
@@ -34,7 +38,7 @@
       v-model="selected"
       :items="items"
       :is-loading="isLoading"
-      :disable-edit="canOnlyAdd"
+      :disable-edit="canOnlyAdd || isReadOnly"
       @edit="editItem"
     />
   </v-card>
@@ -60,20 +64,8 @@ export default Vue.extend({
 
   middleware: ['check-auth', 'auth', 'setCurrentProject'],
 
-  validate({ params, app, store }) {
-    if (/^\d+$/.test(params.id)) {
-      const project = store.getters['projects/project']
-      if (!project.canDefineLabel) {
-        return false
-      }
-      return app.$repositories.member.fetchMyRole(params.id).then((member: MemberItem) => {
-        if (member.isProjectAdmin) {
-          return true
-        }
-        return project.allowMemberToCreateLabelType
-      })
-    }
-    return false
+  validate({ params }) {
+    return /^\d+$/.test(params.id)
   },
 
   data() {
@@ -89,6 +81,10 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters('projects', ['project']),
+
+    isReadOnly(): boolean {
+      return !this.member.isProjectAdmin && !this.project.allowMemberToCreateLabelType
+    },
 
     canOnlyAdd(): boolean {
       if (this.member.isProjectAdmin) {
