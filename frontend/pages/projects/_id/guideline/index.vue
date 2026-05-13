@@ -10,6 +10,7 @@
       :options="editorOptions"
       preview-style="vertical"
       height="inherit"
+      @load="onEditorLoad"
       @change="updateProject"
     />
     <viewer
@@ -60,10 +61,21 @@ export default {
     this.isProjectAdmin = member.isProjectAdmin
     this.project = await this.$services.project.findById(projectId)
     this.loaded = true
-    this.mounted = true
+    // For non-admins the Viewer doesn't need load tracking
+    if (!this.isProjectAdmin) {
+      this.mounted = true
+    }
   },
 
   methods: {
+    onEditorLoad() {
+      // Called when Toast UI Editor finishes internal initialization.
+      // Set content here to avoid the race between initialValue and the
+      // editor's own async setup, then enable updateProject saves.
+      this.$refs.toastuiEditor.invoke('setMarkdown', this.project.guideline || '')
+      this.mounted = true
+    },
+
     updateProject: _.debounce(function () {
       if (this.mounted && this.isProjectAdmin) {
         this.project.guideline = this.$refs.toastuiEditor.invoke('getMarkdown')
